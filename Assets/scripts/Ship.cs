@@ -59,6 +59,9 @@ public class Ship : MonoBehaviour
     // called when the cube hits the floor
     void OnCollisionEnter2D(Collision2D col)
     {
-        Destroy(gameObject);
+        if (col.gameObject.CompareTag("Asteroid"))
+        {
+            Destroy(gameObject);
+        }        
     }
 }
