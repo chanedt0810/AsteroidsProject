@@ -44,8 +44,8 @@ public class Asteroid : MonoBehaviour
     public void Initialize(Direction direction, Vector3 position)
     {
         // apply impulse force to get game object moving
-        const float MinImpulseForce = 3f;
-        const float MaxImpulseForce = 5f;
+        const float MinImpulseForce = 0.5f;
+        const float MaxImpulseForce = 1f;
 
         transform.position = position;
 
@@ -75,5 +75,18 @@ public class Asteroid : MonoBehaviour
             moveDirection * magnitude,
             ForceMode2D.Impulse);
 
+    }
+
+    /// <summary>
+    /// Called when an asteroid collides with a bullet
+    /// </summary>
+    /// <value>col</value>
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(col.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

@@ -335,6 +335,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dd5196a64391c041bf9e395491d83e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefabBullet: {fileID: 1721111346342448, guid: 4fe534ee982575e4c80c82451a044b1e,
+    type: 2}
 --- !u!58 &1295573205
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -401,8 +403,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -558410397
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 76c2fc163096e2048b10eda5569c6bf6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

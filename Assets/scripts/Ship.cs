@@ -5,6 +5,9 @@
 /// </summary>
 public class Ship : MonoBehaviour
 {
+    [SerializeField]
+    GameObject prefabBullet;
+
     // thrust and rotation support
     Rigidbody2D rb2D;
     Vector2 thrustDirection = new Vector2(1, 0);
@@ -40,6 +43,13 @@ public class Ship : MonoBehaviour
             float zRotation = transform.eulerAngles.z * Mathf.Deg2Rad;
             thrustDirection.x = Mathf.Cos(zRotation);
             thrustDirection.y = Mathf.Sin(zRotation);
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            GameObject bullet = Instantiate<GameObject>(prefabBullet);
+            bullet.transform.position = gameObject.transform.position;
+            bullet.GetComponent<Bullet>().ApplyForce(thrustDirection);
         }
 	}
 
