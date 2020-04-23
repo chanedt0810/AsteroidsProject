@@ -12,11 +12,11 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     Sprite asteroidSprite2;
 
-	/// <summary>
-	/// Use this for initialization
-	/// </summary>
-	void Start()
-	{
+    /// <summary>
+    /// Use this for initialization
+    /// </summary>
+    void Start()
+    {
         // set random sprite for asteroid
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
         int spriteNumber = Random.Range(0, 3);
@@ -35,7 +35,7 @@ public class Asteroid : MonoBehaviour
             spriteRenderer.sprite = asteroidSprite2;
             spriteRenderer.color = Color.magenta;
         }
-	}
+    }
 
     /// <summary>
     /// Initialize asteroid in specific direction
@@ -44,28 +44,28 @@ public class Asteroid : MonoBehaviour
     public void Initialize(Direction direction, Vector3 position)
     {
         // apply impulse force to get game object moving
-        const float MinImpulseForce = 3f;
-        const float MaxImpulseForce = 5f;
+        const float MinImpulseForce = 0.5f;
+        const float MaxImpulseForce = 1f;
 
         transform.position = position;
 
-        int randomAngle = Random.Range(1, 31);
-        float angle = 0f;
+        float randomAngle = Random.value * 30f * Mathf.Deg2Rad;
+        float angle;
         if (direction == Direction.Up)
         {
-            angle = (75 * Mathf.Deg2Rad) + (randomAngle * Mathf.Deg2Rad);
+            angle = 75 * Mathf.Deg2Rad + randomAngle;
         }
         else if (direction == Direction.Left)
         {
-            angle = (165 * Mathf.Deg2Rad) + (-randomAngle * Mathf.Deg2Rad);
+            angle = 165 * Mathf.Deg2Rad + randomAngle;
         }
         else if (direction == Direction.Down)
         {
-            angle = (-105 * Mathf.Deg2Rad) + (-randomAngle * Mathf.Deg2Rad);
+            angle = -105 * Mathf.Deg2Rad + randomAngle;
         }
         else
         {
-            angle = (-15 * Mathf.Deg2Rad) + (randomAngle * Mathf.Deg2Rad);
+            angle = -15 * Mathf.Deg2Rad + randomAngle;
         }
 
         Vector2 moveDirection = new Vector2(
@@ -75,5 +75,18 @@ public class Asteroid : MonoBehaviour
             moveDirection * magnitude,
             ForceMode2D.Impulse);
 
+    }
+
+    /// <summary>
+    /// Called when an asteroid collides with a bullet
+    /// </summary>
+    /// <value>col</value>
+    void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Bullet"))
+        {
+            Destroy(col.gameObject);
+            Destroy(gameObject);
+        }
     }
 }

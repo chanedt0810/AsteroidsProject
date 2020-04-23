@@ -5,6 +5,9 @@
 /// </summary>
 public class Ship : MonoBehaviour
 {
+    [SerializeField]
+    GameObject prefabBullet;
+
     // thrust and rotation support
     Rigidbody2D rb2D;
     Vector2 thrustDirection = new Vector2(1, 0);
@@ -41,6 +44,13 @@ public class Ship : MonoBehaviour
             thrustDirection.x = Mathf.Cos(zRotation);
             thrustDirection.y = Mathf.Sin(zRotation);
         }
+
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            GameObject bullet = Instantiate<GameObject>(prefabBullet);
+            bullet.transform.position = gameObject.transform.position;
+            bullet.GetComponent<Bullet>().ApplyForce(thrustDirection);
+        }
 	}
 
     /// <summary>
@@ -59,6 +69,9 @@ public class Ship : MonoBehaviour
     // called when the cube hits the floor
     void OnCollisionEnter2D(Collision2D col)
     {
-        Destroy(gameObject);
+        if (col.gameObject.CompareTag("Asteroid"))
+        {
+            Destroy(gameObject);
+        }        
     }
 }
