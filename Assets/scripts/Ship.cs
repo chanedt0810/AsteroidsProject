@@ -7,6 +7,8 @@ public class Ship : MonoBehaviour
 {
     [SerializeField]
     GameObject prefabBullet;
+    [SerializeField]
+    GameObject HUD;
 
     // thrust and rotation support
     Rigidbody2D rb2D;
@@ -50,6 +52,7 @@ public class Ship : MonoBehaviour
             GameObject bullet = Instantiate<GameObject>(prefabBullet, transform.position, Quaternion.identity);
             Bullet script = bullet.GetComponent<Bullet>();
             script.ApplyForce(thrustDirection);
+            AudioManager.Play(AudioClipName.PlayerShot);
         }
 	}
 
@@ -67,14 +70,17 @@ public class Ship : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroys ship on collision with an asteroid
+    /// Destroys ship on collision with an asteroid and stops the game timer
     /// </summary>
     /// <param name="col">collision info</param>
     void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.CompareTag("Asteroid"))
         {
-            Destroy(gameObject);
+            HUD hud = HUD.GetComponent<HUD>();
+            hud.StopGameTimer();
+            AudioManager.Play(AudioClipName.PlayerDeath);
+            Destroy(gameObject);            
         }        
     }
 }

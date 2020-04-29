@@ -43,10 +43,6 @@ public class Asteroid : MonoBehaviour
     /// <param name="direction"></param>
     public void Initialize(Direction direction, Vector3 position)
     {
-        // apply impulse force to get game object moving
-        const float MinImpulseForce = 0.5f;
-        const float MaxImpulseForce = 1f;
-
         // set asteroid position
         transform.position = position;
 
@@ -70,6 +66,20 @@ public class Asteroid : MonoBehaviour
             angle = -15 * Mathf.Deg2Rad + randomAngle;
         }
 
+        StartMoving(angle);
+
+    }
+
+    /// <summary>
+    /// applies an impulse force to the asteroid with the given angle
+    /// </summary>
+    /// <param name="angle">angle info</param>
+    public void StartMoving(float angle)
+    {
+        // apply impulse force to get game object moving
+        const float MinImpulseForce = 0.2f;
+        const float MaxImpulseForce = 0.7f;
+
         // apply impulse force to get asteroid moving
         Vector2 moveDirection = new Vector2(
             Mathf.Cos(angle), Mathf.Sin(angle));
@@ -77,7 +87,6 @@ public class Asteroid : MonoBehaviour
         GetComponent<Rigidbody2D>().AddForce(
             moveDirection * magnitude,
             ForceMode2D.Impulse);
-
     }
 
     /// <summary>
@@ -88,8 +97,34 @@ public class Asteroid : MonoBehaviour
     {
         if (coll.gameObject.CompareTag("Bullet"))
         {
+            AudioManager.Play(AudioClipName.AsteroidHit);
+            // destroy the bullet
             Destroy(coll.gameObject);
-            Destroy(gameObject);
+
+            if (transform.localScale.x < 0.5)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                // half the scale of the asteroid and the radius
+                Vector3 localScale = transform.localScale;
+                localScale.z = -Camera.main.transform.localScale.z;
+                localScale.x /= 2;
+                localScale.y /= 2;
+
+                transform.localScale = localScale;
+
+                CircleCollider2D collider = transform.GetComponent<CircleCollider2D>();
+                collider.radius /= 2;
+
+                // create 2 new asteroids half the size of the original with random direction and impulse force
+                GameObject smallerAsteroid1 = Instantiate<GameObject>(this.gameObject, transform.position, Quaternion.identity);
+                GameObject smallerAsteroid2 = Instantiate<GameObject>(this.gameObject, transform.position, Quaternion.identity);
+
+                smallerAsteroid1.GetComponent<Asteroid>().StartMoving(Random.Range(0, 2 * Mathf.PI));
+                smallerAsteroid2.GetComponent<Asteroid>().StartMoving(Random.Range(0, 2 * Mathf.PI));
+            }
         }
     }
 }

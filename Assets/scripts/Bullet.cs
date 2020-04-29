@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bullet : MonoBehaviour 
 {
@@ -13,7 +11,7 @@ public class Bullet : MonoBehaviour
 	/// <value>direction</value>
 	public void ApplyForce(Vector2 direction)
 	{
-		const float magnitude = 3f;
+		const float magnitude = 5f;
 		GetComponent<Rigidbody2D>().AddForce(
 			magnitude * direction,
 			ForceMode2D.Impulse);
