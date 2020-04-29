@@ -47,9 +47,9 @@ public class Ship : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            GameObject bullet = Instantiate<GameObject>(prefabBullet);
-            bullet.transform.position = gameObject.transform.position;
-            bullet.GetComponent<Bullet>().ApplyForce(thrustDirection);
+            GameObject bullet = Instantiate<GameObject>(prefabBullet, transform.position, Quaternion.identity);
+            Bullet script = bullet.GetComponent<Bullet>();
+            script.ApplyForce(thrustDirection);
         }
 	}
 
@@ -66,10 +66,13 @@ public class Ship : MonoBehaviour
         }
     }
 
-    // called when the cube hits the floor
-    void OnCollisionEnter2D(Collision2D col)
+    /// <summary>
+    /// Destroys ship on collision with an asteroid
+    /// </summary>
+    /// <param name="col">collision info</param>
+    void OnCollisionEnter2D(Collision2D coll)
     {
-        if (col.gameObject.CompareTag("Asteroid"))
+        if (coll.gameObject.CompareTag("Asteroid"))
         {
             Destroy(gameObject);
         }        

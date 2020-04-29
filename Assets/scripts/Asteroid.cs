@@ -47,8 +47,10 @@ public class Asteroid : MonoBehaviour
         const float MinImpulseForce = 0.5f;
         const float MaxImpulseForce = 1f;
 
+        // set asteroid position
         transform.position = position;
 
+        // set random angle based on position
         float randomAngle = Random.value * 30f * Mathf.Deg2Rad;
         float angle;
         if (direction == Direction.Up)
@@ -68,6 +70,7 @@ public class Asteroid : MonoBehaviour
             angle = -15 * Mathf.Deg2Rad + randomAngle;
         }
 
+        // apply impulse force to get asteroid moving
         Vector2 moveDirection = new Vector2(
             Mathf.Cos(angle), Mathf.Sin(angle));
         float magnitude = Random.Range(MinImpulseForce, MaxImpulseForce);
@@ -80,12 +83,12 @@ public class Asteroid : MonoBehaviour
     /// <summary>
     /// Called when an asteroid collides with a bullet
     /// </summary>
-    /// <value>col</value>
-    void OnCollisionEnter2D(Collision2D col)
+    /// <value>coll</value>
+    void OnCollisionEnter2D(Collision2D coll)
     {
-        if (col.gameObject.CompareTag("Bullet"))
+        if (coll.gameObject.CompareTag("Bullet"))
         {
-            Destroy(col.gameObject);
+            Destroy(coll.gameObject);
             Destroy(gameObject);
         }
     }
